@@ -24,6 +24,7 @@ public class BaseInitData {
     ApplicationRunner initDataRunner() {
         return args -> {
             self.work1();
+            self.work2();
         };
 
     }
@@ -42,5 +43,11 @@ public class BaseInitData {
         Member member5 = memberService.join("user3", "유저3");
 
 
+    }
+
+    @Transactional
+    void work2() {
+        Member m1 = memberService.findByUsername("user1").get();
+        m1.setNickname("유저1-수정");
     }
 }
