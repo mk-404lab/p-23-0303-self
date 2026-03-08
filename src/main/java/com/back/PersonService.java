@@ -1,6 +1,8 @@
 package com.back;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /*
 - Configuration 클래스 + Bean 메서드를 이용하면 빈 등록을 할 수 있다.
@@ -8,7 +10,8 @@ import org.springframework.stereotype.Component;
 - 따라서 클래스 레벨에 Component를 붙여서 복잡한 과정 없이 바로 빈으로 등록 시켜버리자
  */
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class PersonService {
 
     private int version = 1;

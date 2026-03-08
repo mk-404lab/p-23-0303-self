@@ -1,5 +1,6 @@
 package com.back;
 
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,5 +22,12 @@ public class AppConfig {
     @Bean
     public int personVersion() {
         return 100;
+    }
+
+    @Bean
+    public ApplicationRunner myApplicationRunner() {
+        return args -> {
+            System.out.println("MyApplicationRunner is runnig");
+        };
     }
 }
