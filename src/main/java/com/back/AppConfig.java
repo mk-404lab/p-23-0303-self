@@ -1,9 +1,12 @@
 package com.back;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 public class AppConfig {
@@ -32,7 +35,7 @@ public class AppConfig {
     - @Order()에 사용되는 숫자가 작을 수록 우선순위가 높다.(먼저 실행됨)
      */
     @Bean
-    @Order(2)
+    @Order(1)
     public ApplicationRunner myApplicationRunner1() {
         return args -> {
             System.out.println("MyApplicationRunner1 is runnig");
@@ -40,10 +43,32 @@ public class AppConfig {
    }
 
     @Bean
-    @Order(1)
+    @Order(2)
     public ApplicationRunner myApplicationRunner2() {
         return args -> {
             System.out.println("MyApplicationRunner2 is runnig");
         };
+    }
+
+    @Autowired
+    @Lazy
+    private AppConfig self;
+
+    @Bean
+    public ApplicationRunner myApplicationRunner3() {
+        return args -> {
+            work1();
+            work2();
+        };
+    }
+
+    @Transactional
+    public void work1() {
+        System.out.println("회원 테스트 데이터 생성");
+    }
+
+    @Transactional
+    public void work2() {
+        System.out.println("work2 is runnig");
     }
 }
