@@ -3,6 +3,7 @@ package com.back;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /*
 - Configuration 클래스 + Bean 메서드를 이용하면 빈 등록을 할 수 있다.
@@ -20,6 +21,7 @@ public class PersonService {
         this.version = version;
     }
 
+    @Transactional
     public int count() {
         System.out.println("v%d 버전의 count() 호출".formatted(version));
         return 3;

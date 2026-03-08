@@ -52,19 +52,19 @@ public class AppConfig {
 
     @Autowired
     @Lazy
-    private AppConfig self;
+    private AppConfig self;     // AppConfigProxy의 리모컨
 
     @Bean
     public ApplicationRunner myApplicationRunner3() {
         return args -> {
-            work1();
-            work2();
+            self.work1();
+            self.work2();
         };
     }
 
     @Transactional
     public void work1() {
-        System.out.println("회원 테스트 데이터 생성");
+
     }
 
     @Transactional
