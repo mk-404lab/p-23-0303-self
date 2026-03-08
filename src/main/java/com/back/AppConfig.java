@@ -3,6 +3,7 @@ package com.back;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 @Configuration
 public class AppConfig {
@@ -24,10 +25,25 @@ public class AppConfig {
         return 100;
     }
 
+
+    /*
+    - 앱 시작시 실행되는 ApplicationRunner는 여러 개 존재할 수 있다.
+    - 이때 실행 순서를 보장하기 위해 @Order를 사용한다.
+    - @Order()에 사용되는 숫자가 작을 수록 우선순위가 높다.(먼저 실행됨)
+     */
     @Bean
-    public ApplicationRunner myApplicationRunner() {
+    @Order(2)
+    public ApplicationRunner myApplicationRunner1() {
         return args -> {
-            System.out.println("MyApplicationRunner is runnig");
+            System.out.println("MyApplicationRunner1 is runnig");
+        };
+   }
+
+    @Bean
+    @Order(1)
+    public ApplicationRunner myApplicationRunner2() {
+        return args -> {
+            System.out.println("MyApplicationRunner2 is runnig");
         };
     }
 }
