@@ -3,10 +3,7 @@ package com.back.domain.wiseSaying;
 
 import com.back.domain.wiseSaying.entity.WiseSaying;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
@@ -14,7 +11,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/*
+주소 체계는 내가 원하는대로 설정할 수 있다.
+다만 한 가지 방식으로 정했으면 일관되게 사용할 것
+
+Ex) /wiseSayings/{id}/delete
+    /wiseSayings/modify/{id}
+    이렇게 일관성 없이 쓰면 안됨
+ */
+
 @Controller
+@RequestMapping("/wiseSayings")
 public class WiseSayingController {
 
     private int lastId = 5;
@@ -43,7 +50,7 @@ public class WiseSayingController {
         return "%d번 명언이 등록되었습니다.".formatted(wiseSaying.getId());
     }
 
-    @GetMapping("/list")
+    @GetMapping
     @ResponseBody
     public String list() {
 
@@ -58,7 +65,7 @@ public class WiseSayingController {
                 """.formatted(wiseSayingsList);
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/{id}/delete")
     @ResponseBody
     public String delete(@PathVariable int id) {
         WiseSaying wiseSaying = findById(id);
@@ -67,7 +74,7 @@ public class WiseSayingController {
         return "%d번 명언이 삭제되었습니다.".formatted(id);
     }
 
-    @GetMapping("/modify/{id}")
+    @GetMapping("/{id}/modify")
     @ResponseBody
     public String modify(
             @PathVariable int id,
@@ -92,5 +99,17 @@ public class WiseSayingController {
         }
 
         return wiseSaying.get();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseBody
+    public String detail(@PathVariable int id) {
+        WiseSaying wiseSaying = findById(id);
+
+        return """
+                <h1>번호 : %s</h1>
+                <div>명언 : %s</div>
+                <div>작가 : %s</div>
+                """.formatted(wiseSaying.getId(), wiseSaying.getContent(), wiseSaying.getAuthor());
     }
 }
