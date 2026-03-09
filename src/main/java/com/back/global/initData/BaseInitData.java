@@ -45,6 +45,7 @@ public class BaseInitData {
 
     }
 
+
     @Transactional
     void work2() {
         Member m1 = memberService.findByUsername("user1").get();
