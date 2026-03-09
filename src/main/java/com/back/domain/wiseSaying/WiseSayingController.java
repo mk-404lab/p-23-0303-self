@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,16 +61,36 @@ public class WiseSayingController {
     @GetMapping("/delete/{id}")
     @ResponseBody
     public String delete(@PathVariable int id) {
+        WiseSaying wiseSaying = findById(id);
+        wiseSayings.remove(wiseSaying);
+
+        return "%d번 명언이 삭제되었습니다.".formatted(id);
+    }
+
+    @GetMapping("/modify/{id}")
+    @ResponseBody
+    public String modify(
+            @PathVariable int id,
+            @RequestParam(defaultValue = "기본값") String content,
+            @RequestParam(defaultValue = "기본값") String author
+    ) {
+        WiseSaying wiseSaying = findById(id);
+
+        wiseSaying.setContent(content);
+        wiseSaying.setAuthor(author);
+
+        return "%d번 명언이 수정되었습니다.".formatted(id);
+    }
+
+    private WiseSaying findById(int id) {
         Optional<WiseSaying> wiseSaying = wiseSayings.stream()
                 .filter(w -> w.getId() == id)
                 .findFirst();
 
-        if(wiseSaying.isEmpty()) {
+        if (wiseSaying.isEmpty()) {
             throw new RuntimeException("%d번 명언은 존재하지 않습니다.".formatted(id));
         }
 
-        wiseSayings.remove(wiseSaying.get());
-
-        return "%d번 명언이 삭제되었습니다.".formatted(id);
+        return wiseSaying.get();
     }
 }
