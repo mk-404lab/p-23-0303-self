@@ -3,6 +3,8 @@ package com.back.global.initData;
 
 import com.back.domain.member.entity.Member;
 import com.back.domain.member.service.MemberService;
+import com.back.domain.wiseSaying.entity.WiseSaying;
+import com.back.domain.wiseSaying.service.WiseSayingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
@@ -10,6 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,12 +24,14 @@ public class BaseInitData {
     @Lazy
     private BaseInitData self;
     private final MemberService memberService;
+    private final WiseSayingService wiseSayingService;
 
     @Bean
     ApplicationRunner initDataRunner() {
         return args -> {
             self.work1();
             self.work2();
+            self.work3();
         };
 
     }
@@ -50,5 +57,19 @@ public class BaseInitData {
     void work2() {
         Member m1 = memberService.findByUsername("user1").get();
         m1.setNickname("유저1-수정");
+    }
+
+    void work3() {
+        if (wiseSayingService.count() > 0) {
+            return;
+        }
+
+        wiseSayingService.write("명언1", "작가1");
+        wiseSayingService.write("명언2", "작가2");
+        wiseSayingService.write("명언3", "작가3");
+        wiseSayingService.write("명언4", "작가4");
+        wiseSayingService.write("명언5", "작가5");
+
+
     }
 }
